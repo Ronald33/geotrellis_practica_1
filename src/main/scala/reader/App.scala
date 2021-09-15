@@ -45,6 +45,6 @@ object App
 
     val modificado_raster = GeoTiff(modificado_tile, geotiff.extent, geotiff.crs) // Creamos el raster
 
-    modificado_raster.write("raster_modified")
+    modificado_raster.write("raster_modified.tiff")
   }
 }
