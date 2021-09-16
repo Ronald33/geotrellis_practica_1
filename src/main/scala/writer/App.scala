@@ -20,11 +20,11 @@ object App
     println(tile1.asciiDraw()) // Nos permite visualizar en tile en forma de matriz
 
     // Para crear un raster sera necesario establecer la extension que este ocupara en el mapa, esto se realiza con un cuadrante asignando 2 puntos
-    val extent1: Extent = Extent(0, 0, 10, 10);
+    val extent1: Extent = Extent(0, 0, 10, 10)
 
     // Luego de tener la extension que ocupara el mapa (mediante 2 coordenadas) sera necesario establecer a que sistema de coordenadas obedecera dicha extension
     // Entonces sera necesario crear una variable que indique el CRS, en este caso sera el: EPSG:4326
-    val crs: CRS = LatLng;
+    val crs: CRS = LatLng
 
     // Para crear un raster sera necesario asiganar un tile, la extension que ocupara y un sistema de referencia de coordenadas
     val raster1 = GeoTiff(tile1, extent1, crs)

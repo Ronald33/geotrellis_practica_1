@@ -14,7 +14,7 @@ object App
     val geotiff: SinglebandGeoTiff = GeoTiffReader.readSingleband(path)
 
     // Podemos obtener diversas datos del geotiff, tales como el tile, el crs, la extension, etc.
-    val cols: Int = geotiff.cols;
+    val cols: Int = geotiff.cols
     val rows: Int = geotiff.rows
     val tile: Tile = geotiff.tile
 
@@ -22,11 +22,11 @@ object App
     val data: Array[Int] = new Array[Int](cols*rows)
 
     // Crearemos un indice para recorrer el array
-    var index = 0;
+    var index = 0
 
     // Crearemos un nuevo raster en el que aquellos "pixeles" que no alcancen el umbral no seran considerados
     // Para ello crearemos el umbral
-    val threshold = 5;
+    val threshold = 5
 
     for(i <- 0 until cols)
     {
@@ -44,7 +44,6 @@ object App
     println(modificado_tile.asciiDraw()) // Como se observa aquellos valores que no superaron el umbral tienen el valor ND
 
     val modificado_raster = GeoTiff(modificado_tile, geotiff.extent, geotiff.crs) // Creamos el raster
-
     modificado_raster.write("raster_modified.tiff")
   }
 }
