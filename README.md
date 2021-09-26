@@ -2,7 +2,7 @@
 
 ## Instrucciones
 
-La línea de aprendizaje eigue ei siguiente orden:
+El orden de ejecución recomendado es el siguiente:
 
 * writer.App: Se trata los concetos: Tile, extent, crs y rasters y finalmente se genera un tif.
 * reader.App: Se lee el tif creado en el paso anterior y se modifica agregandole pixeles transparentes.
