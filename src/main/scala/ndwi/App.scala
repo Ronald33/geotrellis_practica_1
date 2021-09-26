@@ -1,6 +1,6 @@
 package ndwi
 
-import geotrellis.raster.{DoubleConstantNoDataCellType, MultibandTile, Tile, isData}
+import geotrellis.raster.{ArrayTile, BitArrayTile, DoubleConstantNoDataCellType, IntArrayTile, MultibandTile, NODATA, Tile, isData}
 import geotrellis.raster.io.geotiff.{GeoTiff, MultibandGeoTiff}
 import geotrellis.raster.io.geotiff.reader.GeoTiffReader
 
@@ -17,33 +17,26 @@ object App
     val tile: MultibandTile = geotiff.tile
     val cols: Int = tile.cols
     val rows: Int = tile.rows
-    val bands: Int = tile.bandCount
 
     println("cols: " + cols)
     println("rows: " + rows)
-    println("bands: " + bands)
-
-    // =============================== Codigo no funcional ===================================
-
-    // Al intentar procesar mutiples datos de tipo double, el tiempo se extende demasiado
-    // Por tal motivo solo se proceso 25 pixeles (5x5) y este demora alrededor de 5 segundos
-    // Cuando intente procesar 100 pixeles (10x10) la PC se congelo de forma intermitente
-    // Por lo tanto no es recomendable procesar una imagen satelital completa de esta forma
 
     /*
-
-    // val data: Array[Double] = new Array[Double](cols*rows)
-    val data: Array[Double] = new Array[Double](5*5)
+    val data: Array[Int] = new Array[Int](cols*rows)
     var index = 0
 
-    for(i <- 0 until 5)
-    {
-      for(j <- 0 until 5)
-      {
-        val p0: Double = tile.band(0).get(j, i)
-        val p1: Double = tile.band(1).get(j, i)
+    val green_band = tile.band(1)
+    val nir_band = tile.band(4)
 
-        val ndwi: Double = (p0 - p1) / (p0 + p1)
+
+    for(i <- 0 until cols)
+    {
+      for(j <- 0 until rows)
+      {
+        val green: Double = green_band.get(j, i)
+        val nir: Double = nir_band.get(j, i)
+
+        val ndwi: Double = (green - nir) / (green + nir)
 
         if(ndwi > 0.4)  { data(index) = 1 }
         else  { data(index) = NODATA }
@@ -51,18 +44,12 @@ object App
       }
     }
 
-    val generated_tile = DoubleArrayTile(data, 5, 5)
-
-    print(generated_tile.asciiDraw())
-
+    val generated_tile = IntArrayTile(data, cols, rows)
     */
 
-    // =============================== Fin de Codigo no funcional ===================================
-
-    // Por lo anteriormente expuesto se uso como referencia el codigo de este repositorio:
     // https://github.com/geotrellis/geotrellis-landsat-tutorial/blob/master/src/main/scala/tutorial/CreateNDWIPng.scala
 
-    // La banda 1 es el green y la banda 4 es el infrarojo (cercano)
+    // /*
     val generated_tile: Tile = tile.convert(DoubleConstantNoDataCellType).combineDouble(1, 4) { (g, ir) =>
       if(isData(g) && isData(ir))
       {
@@ -71,8 +58,9 @@ object App
       }
       else { Double.NaN }
     }
+    // */
 
-    val generated_raster = GeoTiff(generated_tile.convert(DoubleConstantNoDataCellType), geotiff.extent, geotiff.crs) // Creamos el raster
-    generated_raster.write("ndwi.tiff")
+    val generated_raster = GeoTiff(generated_tile, geotiff.extent, geotiff.crs) // Creamos el raster
+    generated_raster.write("ndwi.tif")
   }
 }

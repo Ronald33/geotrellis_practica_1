@@ -29,6 +29,6 @@ object App
     // Para crear un raster sera necesario asiganar un tile, la extension que ocupara y un sistema de referencia de coordenadas
     val raster1 = GeoTiff(tile1, extent1, crs)
 
-    raster1.write("raster_first.tiff")
+    raster1.write("writed.tif")
   }
 }

@@ -8,7 +8,7 @@ object App
 {
   def main(args: Array[String]): Unit =
   {
-    val path: String = "raster_first.tiff" // Ruta de la imagen satelital
+    val path: String = "writed.tif" // Ruta de la imagen satelital
 
     // Almacenamos el geotiff en una variable
     val geotiff: SinglebandGeoTiff = GeoTiffReader.readSingleband(path)
@@ -40,10 +40,10 @@ object App
       }
     }
 
-    val modificado_tile = IntArrayTile(data, tile.cols, tile.rows) // Creamos el tile con la data modificada
-    println(modificado_tile.asciiDraw()) // Como se observa aquellos valores que no superaron el umbral tienen el valor ND
+    val modified_tile = IntArrayTile(data, tile.cols, tile.rows) // Creamos el tile con la data modificada
+    println(modified_tile.asciiDraw()) // Como se observa aquellos valores que no superaron el umbral tienen el valor ND
 
-    val modificado_raster = GeoTiff(modificado_tile, geotiff.extent, geotiff.crs) // Creamos el raster
-    modificado_raster.write("raster_modified.tiff")
+    val modified_raster = GeoTiff(modified_tile, geotiff.extent, geotiff.crs) // Creamos el raster
+    modified_raster.write("modified.tif")
   }
 }
